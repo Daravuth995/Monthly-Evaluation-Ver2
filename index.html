@@ -1,0 +1,3014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Evaluation Portal - Modern Redesign</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Khmer:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* New Color Palette & Design System */
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #6366f1;
+      --primary-dark: #4338ca;
+      --secondary: #10b981;
+      --secondary-light: #34d399;
+      --secondary-dark: #059669;
+      --accent: #f59e0b;
+      --accent-light: #fbbf24;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+      --light: #f8fafc;
+      --dark: #1e293b;
+      --dark-light: #475569;
+      --gray: #94a3b8;
+      --gray-light: #e2e8f0;
+      --bg-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      --bg-gradient-dark: linear-gradient(135deg, #3730a3 0%, #6d28d9 100%);
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --card-bg-hover: rgba(255, 255, 255, 0.98);
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --header-height: 80px;
+      --header-shrink-height: 60px;
+      --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      --shadow-primary: 0 0 0 3px rgba(79, 70, 229, 0.3);
+      --shadow-success: 0 0 0 3px rgba(16, 185, 129, 0.3);
+      --shadow-warning: 0 0 0 3px rgba(245, 158, 11, 0.3);
+      --shadow-danger: 0 0 0 3px rgba(239, 68, 68, 0.3);
+      --border-radius: 12px;
+      --border-radius-lg: 16px;
+      --border-radius-xl: 20px;
+    }
+
+    [data-theme="dark"] {
+      --bg-gradient: linear-gradient(135deg, #3730a3 0%, #6d28d9 100%);
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-bg-hover: rgba(30, 41, 59, 0.98);
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --dark: #f1f5f9;
+      --gray: #64748b;
+      --gray-light: #334155;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      color: var(--text-primary);
+      scroll-behavior: smooth;
+      line-height: 1.6;
+    }
+
+    .khmer {
+      font-family: 'Noto Sans Khmer', sans-serif;
+    }
+
+    /* Modern Glassmorphism Effect */
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border-radius: var(--border-radius-xl);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .glass-dark {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border-radius: var(--border-radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: var(--shadow-xl);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 5px currentColor; }
+      50% { box-shadow: 0 0 20px currentColor, 0 0 30px currentColor; }
+    }
+
+    @keyframes bounce {
+      0%, 20%, 53%, 80%, 100% { transform: translate3d(0,0,0); }
+      40%, 43% { transform: translate3d(0,-15px,0); }
+      70% { transform: translate3d(0,-7px,0); }
+      90% { transform: translate3d(0,-2px,0); }
+    }
+
+    @keyframes progress {
+      0% { stroke-dasharray: 0 100; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200px 0; }
+      100% { background-position: 200px 0; }
+    }
+
+    @keyframes loginSuccess {
+      0% { transform: scale(0.9); opacity: 0; }
+      70% { transform: scale(1.05); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes scoreUpdate {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .animate-fadeIn { animation: fadeIn 0.6s ease-out forwards; }
+    .animate-slideIn { animation: slideIn 0.4s ease-out forwards; }
+    .animate-pulse { animation: pulse 2s infinite; }
+    .animate-glow { animation: glow 2s infinite; }
+    .animate-bounce { animation: bounce 1s infinite; }
+    .animate-float { animation: float 3s ease-in-out infinite; }
+    .animate-shimmer { 
+      animation: shimmer 1.5s infinite;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      background-size: 200px 100%;
+    }
+    .animate-loginSuccess { animation: loginSuccess 0.8s ease-out forwards; }
+    .animate-scoreUpdate { animation: scoreUpdate 0.5s ease-out; }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Payment Reminder Banner */
+    .payment-reminder {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(90deg, var(--warning), var(--accent));
+      color: white;
+      padding: 12px 20px;
+      text-align: center;
+      z-index: 1000;
+      display: none;
+      box-shadow: var(--shadow-md);
+      animation: slideIn 0.5s ease-out;
+      font-weight: 500;
+    }
+
+    .payment-reminder i {
+      margin-right: 8px;
+    }
+
+    .payment-reminder a {
+      color: white;
+      text-decoration: underline;
+      font-weight: 600;
+      margin-left: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .payment-reminder a:hover {
+      text-decoration: none;
+      opacity: 0.9;
+    }
+
+    /* Login Styles - Enhanced Animation */
+    .login-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-background {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .login-background::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(79, 70, 229, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.2) 0%, transparent 50%);
+    }
+
+    .floating-shapes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .shape-1 {
+      width: 80px;
+      height: 80px;
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape-2 {
+      width: 60px;
+      height: 60px;
+      top: 60%;
+      left: 80%;
+      animation-delay: 2s;
+    }
+
+    .shape-3 {
+      width: 100px;
+      height: 100px;
+      top: 80%;
+      left: 20%;
+      animation-delay: 4s;
+    }
+
+    .login-card {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 420px;
+      padding: 40px 35px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .login-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .login-title {
+      color: white;
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .login-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1rem;
+      margin-bottom: 30px;
+      font-weight: 400;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      color: white;
+      margin-bottom: 8px;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--border-radius);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: white;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+    }
+
+    .input-group input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: white;
+      color: var(--primary);
+      width: 100%;
+      justify-content: center;
+      margin-top: 10px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .error-message, .hint-message {
+      padding: 12px 16px;
+      border-radius: var(--border-radius);
+      margin: 15px 0;
+      display: none;
+      text-align: left;
+    }
+
+    .error-message {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: white;
+    }
+
+    .hint-message {
+      background: rgba(79, 70, 229, 0.2);
+      border: 1px solid rgba(79, 70, 229, 0.3);
+      color: white;
+    }
+
+    .forgot-link {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .forgot-link:hover {
+      color: white;
+      text-decoration: underline;
+    }
+
+    /* Login Success Alert */
+    .login-success-alert {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--success);
+      color: white;
+      padding: 16px 24px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-lg);
+      z-index: 1001;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      animation: slideIn 0.5s ease-out;
+      font-weight: 500;
+    }
+
+    /* Dashboard Styles - Modern Redesign */
+    .dashboard {
+      display: none;
+      min-height: 100vh;
+      background: var(--bg-gradient);
+    }
+
+    .dashboard-header {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      padding: 15px 30px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--header-height);
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .dashboard-header.shrink {
+      height: var(--header-shrink-height);
+      box-shadow: var(--shadow);
+    }
+
+    .dashboard-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+    }
+
+    .dashboard-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .dashboard-header.shrink .dashboard-title {
+      font-size: 1.2rem;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(0, 0, 0, 0.05);
+      transform: rotate(30deg);
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      background-size: cover;
+      background-position: center;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+      border: 2px solid white;
+    }
+
+    .avatar:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+    }
+
+    .logout-btn {
+      background: var(--danger);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logout-btn:hover {
+      background: #dc2626;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .dashboard-content {
+      padding: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: calc(var(--header-height) + 20px);
+    }
+
+    .dashboard-header.shrink ~ .dashboard-content {
+      padding-top: calc(var(--header-shrink-height) + 20px);
+    }
+
+    /* Student Header - Compact Modern Design */
+    .student-header {
+      padding: 25px;
+      margin-bottom: 30px;
+      border-radius: var(--border-radius-xl);
+      background: var(--card-bg);
+      box-shadow: var(--shadow-md);
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 25px;
+      align-items: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .student-header:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+      background: var(--card-bg-hover);
+    }
+
+    .student-info h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 5px;
+    }
+
+    .student-id {
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+
+    /* Monthly Performance Bar */
+    .monthly-performance {
+      background: var(--card-bg);
+      border-radius: var(--border-radius-lg);
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+    }
+
+    .monthly-performance:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .monthly-performance-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .monthly-performance-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .performance-bar-container {
+      height: 24px;
+      background: var(--gray-light);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .performance-bar {
+      height: 100%;
+      border-radius: 12px;
+      background: linear-gradient(90deg, var(--secondary), var(--secondary-light));
+      transition: width 1s ease;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 10px;
+      color: white;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .performance-indicators {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    /* Points Display - Modern Design */
+    .points-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .points-label {
+      font-size: 0.9rem;
+      color: var(--gray);
+      font-weight: 500;
+    }
+
+    .points-badge {
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+    }
+
+    .points-badge:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+    }
+
+    .send-points-btn {
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      background: rgba(79, 70, 229, 0.1);
+      color: var(--primary);
+      border: 1px solid rgba(79, 70, 229, 0.3);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .send-points-btn:hover {
+      background: rgba(79, 70, 229, 0.2);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Payment Status - Modern Design */
+    .payment-status {
+      text-align: right;
+    }
+
+    .payment-label {
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .status-badge {
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .status-badge:hover {
+      transform: scale(1.05);
+    }
+
+    .status-paid {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      border: 2px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .status-paid:hover {
+      box-shadow: var(--shadow-success);
+    }
+
+    .status-pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--warning);
+      border: 2px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .status-pending:hover {
+      box-shadow: var(--shadow-warning);
+    }
+
+    .status-unpaid {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+      border: 2px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .status-unpaid:hover {
+      box-shadow: var(--shadow-danger);
+    }
+
+    .payment-dates {
+      font-size: 0.8rem;
+      color: var(--gray);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* Coupon Redemption - Modern Design */
+    .coupon-redemption {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: end;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--gray-light);
+    }
+
+    .coupon-label {
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .coupon-form {
+      display: flex;
+      gap: 10px;
+    }
+
+    .coupon-input {
+      padding: 10px 14px;
+      border: 1px solid var(--gray-light);
+      border-radius: var(--border-radius);
+      background: var(--card-bg);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      flex-grow: 1;
+      max-width: 180px;
+      transition: all 0.3s ease;
+    }
+
+    .coupon-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: var(--shadow-primary);
+    }
+
+    .coupon-apply-btn {
+      padding: 10px 16px;
+      border-radius: var(--border-radius);
+      font-size: 0.85rem;
+      font-weight: 500;
+      background: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .coupon-apply-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .coupon-details {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .coupon-detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .coupon-detail-label {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    .coupon-detail-value {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .coupon-message {
+      padding: 10px 14px;
+      border-radius: var(--border-radius);
+      margin-top: 10px;
+      font-size: 0.85rem;
+      display: none;
+      grid-column: 1 / -1;
+    }
+
+    .coupon-success {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--success);
+    }
+
+    .coupon-error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: var(--danger);
+    }
+
+    /* Circular Score Rings - Modern Design */
+    .score-ring-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .score-ring {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      transition: transform 0.3s ease;
+    }
+
+    .score-ring:hover {
+      transform: scale(1.05);
+    }
+
+    .score-ring-circle {
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+
+    .score-ring-bg {
+      stroke: rgba(0, 0, 0, 0.1);
+      stroke-width: 8;
+      fill: none;
+    }
+
+    .score-ring-progress {
+      stroke-width: 8;
+      stroke-linecap: round;
+      fill: none;
+      animation: progress 1.5s ease-out forwards;
+    }
+
+    .score-ring-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-anchor: middle;
+    }
+
+    .score-range {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    /* Criteria Grid Table - NEW DESIGN */
+    .criteria-grid-table {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .criterion-table-item {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+      text-align: center;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .criterion-table-item:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      background: var(--card-bg-hover);
+    }
+
+    .criterion-table-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .criterion-table-icon {
+      font-size: 1.5rem;
+      color: var(--primary);
+      transition: transform 0.3s ease;
+    }
+
+    .criterion-table-item:hover .criterion-table-icon {
+      transform: scale(1.2);
+    }
+
+    .criterion-table-title {
+      font-weight: 600;
+      color: var(--dark);
+      font-size: 1rem;
+    }
+
+    .criterion-table-subtitle {
+      font-size: 0.75rem;
+      color: var(--gray);
+    }
+
+    .criterion-table-score {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 10px 0;
+      transition: all 0.3s ease;
+    }
+
+    .criterion-table-score.excellent {
+      color: var(--success);
+    }
+
+    .criterion-table-score.good {
+      color: var(--warning);
+    }
+
+    .criterion-table-score.poor {
+      color: var(--danger);
+    }
+
+    .criterion-table-progress {
+      height: 8px;
+      background: var(--gray-light);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .criterion-table-progress-bar {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 1s ease;
+    }
+
+    .criterion-table-progress-bar.excellent {
+      background: linear-gradient(90deg, var(--success), var(--secondary-light));
+    }
+
+    .criterion-table-progress-bar.good {
+      background: linear-gradient(90deg, var(--warning), var(--accent-light));
+    }
+
+    .criterion-table-progress-bar.poor {
+      background: linear-gradient(90deg, var(--danger), #f87171);
+    }
+
+    /* Overall Score - Modern Design */
+    .overall-score {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      border-radius: var(--border-radius-xl);
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .overall-score:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .overall-score-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .overall-score h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .overall-score-value {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .overall-score:hover .overall-score-value {
+      transform: scale(1.05);
+    }
+
+    .overall-progress {
+      width: 100%;
+      max-width: 400px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      margin: 20px auto;
+      overflow: hidden;
+    }
+
+    .overall-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--success), var(--secondary-light));
+      border-radius: 5px;
+      transition: width 0.8s ease;
+      position: relative;
+    }
+
+    .performance-indicator {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      opacity: 0.9;
+      max-width: 300px;
+      margin: 20px auto 0;
+    }
+
+    .top-performer {
+      background: linear-gradient(135deg, #fbbf24, #fcd34d);
+      color: #92400e;
+      padding: 8px 15px;
+      border-radius: 50px;
+      font-weight: 600;
+      margin-top: 15px;
+      display: inline-block;
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+    }
+
+    .top-performer:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Feedback Cards - Modern Design */
+    .feedback-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .feedback-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius-lg);
+      padding: 25px;
+      box-shadow: var(--shadow-md);
+      border-left: 4px solid;
+      transition: all 0.3s ease;
+    }
+
+    .feedback-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      background: var(--card-bg-hover);
+    }
+
+    .feedback-strength { border-left-color: var(--success); }
+    .feedback-weakness { border-left-color: var(--danger); }
+    .feedback-improvement { border-left-color: var(--primary); }
+
+    .feedback-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      font-weight: 600;
+      color: var(--dark);
+      font-size: 1.1rem;
+    }
+
+    .feedback-header i {
+      transition: transform 0.3s ease;
+    }
+
+    .feedback-card:hover .feedback-header i {
+      transform: scale(1.2);
+    }
+
+    /* Comments & Chart Sections - Modern Design */
+    .comments-section, .chart-section {
+      background: var(--card-bg);
+      border-radius: var(--border-radius-xl);
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+    }
+
+    .comments-section:hover, .chart-section:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+      background: var(--card-bg-hover);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 25px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .section-header i {
+      transition: transform 0.3s ease;
+    }
+
+    .comments-section:hover .section-header i,
+    .chart-section:hover .section-header i {
+      transform: scale(1.2);
+    }
+
+    .comments-container {
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    .comment-item {
+      background: rgba(79, 70, 229, 0.05);
+      border: 1px solid rgba(79, 70, 229, 0.1);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .comment-item:hover {
+      transform: translateX(5px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 10px;
+      gap: 15px;
+    }
+
+    .comment-teacher {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .comment-meta {
+      font-size: 0.8rem;
+      color: var(--gray);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .comment-type {
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .type-positive { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+    .type-improvement { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+    .type-general { background: rgba(108, 117, 125, 0.2); color: var(--gray); }
+
+    .chart-container {
+      height: 300px;
+      margin-top: 20px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: var(--gray);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      opacity: 0.5;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: white;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Floating Action Button - Modern Design */
+    .fab {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+      cursor: pointer;
+      z-index: 99;
+      transition: all 0.3s ease;
+      display: none;
+      font-size: 1.2rem;
+    }
+
+    .fab:hover {
+      transform: translateY(-3px) scale(1.1);
+      box-shadow: var(--shadow-xl);
+    }
+
+    /* Modal Styles - Modern Design */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border-radius: var(--border-radius-xl);
+      box-shadow: var(--shadow-xl);
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow: hidden;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: 20px 25px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray);
+      transition: all 0.2s;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .modal-close:hover {
+      color: var(--danger);
+      background: rgba(0, 0, 0, 0.05);
+      transform: rotate(90deg);
+    }
+
+    .modal-body {
+      padding: 25px;
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+
+    /* Send Points Modal - Modern Design */
+    .send-points-form {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .send-points-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .send-points-input-group label {
+      font-weight: 500;
+      color: var(--dark);
+      font-size: 0.95rem;
+    }
+
+    .send-points-input-group input {
+      padding: 12px 16px;
+      border: 1px solid var(--gray-light);
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: var(--card-bg);
+      color: var(--text-primary);
+    }
+
+    .send-points-input-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: var(--shadow-primary);
+    }
+
+    .send-points-btn {
+      padding: 14px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      box-shadow: var(--shadow-sm);
+      font-size: 1rem;
+    }
+
+    .send-points-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .send-points-btn:disabled {
+      background: var(--gray);
+      cursor: not-allowed;
+    }
+
+    .send-points-message {
+      padding: 12px 16px;
+      border-radius: var(--border-radius);
+      margin-top: 10px;
+      display: none;
+      font-size: 0.9rem;
+    }
+
+    .send-points-success {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--success);
+    }
+
+    .send-points-error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: var(--danger);
+    }
+
+    .history-toggle-btn {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 15px;
+      padding: 10px 0;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+    }
+
+    .history-toggle-btn:hover {
+      color: var(--primary-dark);
+    }
+
+    .history-toggle-btn i {
+      transition: transform 0.3s ease;
+    }
+
+    .history-toggle-btn.active i {
+      transform: rotate(180deg);
+    }
+
+    .send-points-history {
+      margin-top: 15px;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      padding-top: 15px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .send-points-history.active {
+      max-height: 300px;
+    }
+
+    .send-points-history-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .send-points-history-list {
+      max-height: 250px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    .send-points-history-item {
+      padding: 12px 16px;
+      border-radius: var(--border-radius);
+      margin-bottom: 10px;
+      background: rgba(79, 70, 229, 0.05);
+      border-left: 4px solid;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .send-points-history-item:hover {
+      transform: translateX(5px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .send-points-history-item.sent {
+      border-left-color: var(--danger);
+    }
+
+    .send-points-history-item.received {
+      border-left-color: var(--success);
+    }
+
+    .send-points-history-details {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .send-points-history-direction {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .send-points-history-direction.sent {
+      color: var(--danger);
+    }
+
+    .send-points-history-direction.received {
+      color: var(--success);
+    }
+
+    .send-points-history-id {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    .send-points-history-amount {
+      font-weight: 600;
+    }
+
+    .send-points-history-date {
+      font-size: 0.8rem;
+      color: var(--gray);
+      text-align: right;
+    }
+
+    .send-points-empty {
+      text-align: center;
+      padding: 20px;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    /* Score Meaning Guide Modal - Modern Design */
+    .score-guide-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(35, 40, 80, 0.18);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.5s;
+      padding: 20px;
+    }
+
+    .score-guide-glass {
+      background: rgba(255,255,255,0.22);
+      backdrop-filter: blur(16px);
+      border-radius: var(--border-radius-xl);
+      box-shadow: var(--shadow-xl);
+      border: 1.5px solid rgba(255,255,255,0.35);
+      padding: 36px 28px 28px 28px;
+      min-width: 340px;
+      max-width: 95vw;
+      color: var(--dark);
+      animation: fadeIn 0.6s cubic-bezier(.4,2,.6,1.2);
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    .score-guide-glass:hover {
+      transform: scale(1.02);
+    }
+
+    .score-guide-title {
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 22px;
+      color: var(--primary);
+      letter-spacing: 0.01em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .score-guide-list > div {
+      background: rgba(79, 70, 229, 0.09);
+      border-radius: var(--border-radius);
+      margin-bottom: 11px;
+      padding: 13px 17px;
+      display: flex;
+      align-items: baseline;
+      gap: 13px;
+      font-size: 1.06em;
+      font-weight: 500;
+      box-shadow: 0 1px 7px 0 rgba(79, 70, 229, 0.06);
+      border-left: 4px solid var(--primary-light);
+      transition: all 0.18s;
+    }
+
+    .score-guide-list > div:hover {
+      background: rgba(79, 70, 229, 0.15);
+      transform: translateX(5px);
+    }
+
+    .score-guide-list > div b {
+      min-width: 65px;
+      color: var(--primary);
+      font-size: 1.04em;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    .score-guide-list > div span {
+      color: var(--dark);
+      opacity: 0.89;
+      font-size: 0.99em;
+    }
+    .close-btn {
+      position: absolute;
+      top: 17px;
+      right: 18px;
+      background: rgba(235,235,235,0.43);
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      color: var(--gray);
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: all 0.19s;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .close-btn:hover {
+      background: rgba(245,245,245,0.73);
+      color: var(--danger);
+      transform: rotate(90deg);
+    }
+
+    /* Restriction Modal - Modern Design */
+    #restrictionModal.modal-overlay {
+      z-index: 10001 !important;
+    }
+
+    .dashboard.blurred {
+      filter: blur(7px) grayscale(0.1);
+      pointer-events: none;
+      user-select: none;
+    }
+    #restrictionModal.active { display: flex !important; opacity:1 !important;}
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .student-header {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .payment-status {
+        text-align: left;
+      }
+      
+      .criteria-grid-table {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-content { padding: 20px; }
+      .student-header { padding: 25px; }
+      .criteria-grid-table { grid-template-columns: 1fr; }
+      .feedback-grid { grid-template-columns: 1fr; }
+      .overall-score-value { font-size: 3rem; }
+      .login-card { padding: 30px 25px; }
+      .coupon-redemption {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      .coupon-details {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .fab { display: flex; }
+      .dashboard-header {
+        padding: 15px 20px;
+      }
+      
+      /* Mobile-specific adjustments */
+      .points-display, .payment-status {
+        text-align: center;
+      }
+      
+      .student-header {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      
+      .send-points-btn, .coupon-apply-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 500px){
+      .score-guide-glass { min-width: 90vw; padding: 22px 7vw 17px 7vw; }
+      .score-guide-list > div { padding: 11px 7px;}
+      .modal-body { padding: 20px; }
+      .modal-header { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Payment Reminder Banner -->
+  <div class="payment-reminder" id="paymentReminder">
+    <i class="fas fa-exclamation-circle"></i>
+    Your next payment is due soon! <a href="#" onclick="openSendPointsModal()">Pay now</a>
+  </div>
+
+  <!-- Login Success Alert -->
+  <div class="login-success-alert" id="loginSuccessAlert">
+    <i class="fas fa-check-circle"></i>
+    Login successful! Welcome back.
+  </div>
+
+  <!-- Login Page -->
+  <div class="login-container" id="loginContainer">
+    <div class="login-background"></div>
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    
+    <div class="login-card glass animate-fadeIn">
+      <h1 class="login-title">
+        <i class="fas fa-graduation-cap"></i>
+        Student Portal
+      </h1>
+      <p class="login-subtitle">Access your academic dashboard and performance metrics</p>
+      
+      <div class="input-group">
+        <label for="studentId">
+          <i class="fas fa-id-card"></i> Student ID
+        </label>
+        <input type="text" id="studentId" placeholder="Enter your Student ID (e.g. stu001)">
+      </div>
+      
+      <div class="input-group">
+        <label for="password">
+          <i class="fas fa-lock"></i> Password
+        </label>
+        <input type="password" id="password" placeholder="Enter your Password">
+      </div>
+      
+      <div class="error-message" id="errorMessage"></div>
+      <div class="hint-message" id="hintMessage"></div>
+      
+      <div style="text-align: center; margin: 15px 0;">
+        <a href="#" class="forgot-link" onclick="showPasswordHint()">
+          <i class="fas fa-question-circle"></i> Forgot your password?
+        </a>
+      </div>
+      
+      <button class="btn btn-primary" onclick="login()" id="loginBtn">
+        <i class="fas fa-sign-in-alt"></i>
+        <span id="loginText">Login to Dashboard</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="dashboard" id="dashboard">
+    <div class="dashboard-header" id="dashboardHeader">
+      <div class="dashboard-nav">
+        <h1 class="dashboard-title">
+          <i class="fas fa-chart-line"></i>
+          Evaluation Dashboard
+        </h1>
+        <div class="user-info">
+          <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon" id="themeIcon"></i>
+          </button>
+          <div class="avatar" id="userAvatar">JD</div>
+          <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="logout-text">Logout</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-content">
+      <!-- Student Header -->
+      <div class="student-header animate-fadeIn">
+        <div class="student-info">
+          <h2 id="studentName">John Doe</h2>
+          <p class="student-id">Student ID: <span id="displayStudentId">stu001</span></p>
+        </div>
+        
+        <!-- Points Display UI --> 
+        <div class="points-display">
+          <div class="points-label">
+            Points Earned <span class="khmer" style="font-size: 1em;">(ពិន្ទុសរុប)</span>
+          </div>
+          <div class="points-badge" id="pointsBadge">
+            <i class="fas fa-star"></i>
+            <span id="pointsValue">--</span>
+          </div>
+          <button class="send-points-btn" onclick="openSendPointsModal()">
+            <i class="fas fa-paper-plane"></i>
+            Send Points
+          </button>
+        </div>
+        
+        <div class="payment-status">
+          <p class="payment-label">
+            Payment Status <span class="khmer">(ស្ថានភាពការបង់ថ្លៃសិក្សា)</span>
+          </p>
+          <div class="status-badge animate-pulse animate-glow" id="paymentBadge">
+            <i class="fas fa-check-circle"></i>
+            <span>PAID</span>
+          </div>
+          <div class="payment-dates" id="paymentDates">
+            <div>Last Paid: May 15, 2025</div>
+            <div>Next Due: August 1, 2025</div>
+          </div>
+        </div>
+
+        <!-- Coupon Redemption Section -->
+        <div class="coupon-redemption">
+          <div>
+            <p class="coupon-label">
+              Coupon Redemption <span class="khmer">(ការបញ្ចុះតម្លៃ)</span>
+            </p>
+            <div class="coupon-form">
+              <input type="text" class="coupon-input" id="couponCode" placeholder="Enter coupon code">
+              <button class="coupon-apply-btn" onclick="applyCoupon()">Apply</button>
+            </div>
+            <div class="coupon-message" id="couponMessage"></div>
+          </div>
+          
+          <div class="coupon-details">
+            <div class="coupon-detail-item">
+              <div class="coupon-detail-label">Payment</div>
+              <div class="coupon-detail-value" id="paymentAmount">$200</div>
+            </div>
+            <div class="coupon-detail-item">
+              <div class="coupon-detail-label">Discount</div>
+              <div class="coupon-detail-value" id="discountPercent">0%</div>
+            </div>
+            <div class="coupon-detail-item">
+              <div class="coupon-detail-label">After Discount</div>
+              <div class="coupon-detail-value" id="amountAfterDiscount">$200</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monthly Performance Bar -->
+      <div class="monthly-performance animate-fadeIn">
+        <div class="monthly-performance-header">
+          <h3 class="monthly-performance-title">
+            <i class="fas fa-chart-bar"></i>
+            <span class="khmer">លទ្ធផលការសិក្សាប្រចាំខែ</span> <span id="currentMonth">April</span>
+          </h3>
+          <div class="performance-score" id="monthlyPerformanceScore">86%</div>
+        </div>
+        <div class="performance-bar-container">
+          <div class="performance-bar" id="monthlyPerformanceBar" style="width: 86%;">86%</div>
+        </div>
+        <div class="performance-indicators">
+          <span>0%</span>
+          <span>50%</span>
+          <span>100%</span>
+        </div>
+      </div>
+
+      <!-- Evaluation Criteria Grid Table -->
+      <div class="criteria-grid-table">
+        <div class="criterion-table-item animate-fadeIn" style="animation-delay: 0.1s;">
+          <div class="criterion-table-header">
+            <i class="fas fa-volume-up criterion-table-icon"></i>
+            <div>
+              <div class="criterion-table-title">Pronunciation</div>
+              <div class="criterion-table-subtitle khmer">(បញ្ចេញសំឡេង)</div>
+            </div>
+          </div>
+          <div class="criterion-table-score excellent" id="pronunciationScoreTable">9.0</div>
+          <div class="criterion-table-progress">
+            <div class="criterion-table-progress-bar excellent" style="width: 90%;"></div>
+          </div>
+          <div class="score-range">
+            <span>0 (Poor)</span>
+            <span>10 (Excellent)</span>
+          </div>
+        </div>
+
+        <div class="criterion-table-item animate-fadeIn" style="animation-delay: 0.2s;">
+          <div class="criterion-table-header">
+            <i class="fas fa-music criterion-table-icon"></i>
+            <div>
+              <div class="criterion-table-title">Intonation</div>
+              <div class="criterion-table-subtitle khmer">(លំហូរសម្លេង)</div>
+            </div>
+          </div>
+          <div class="criterion-table-score good" id="intonationScoreTable">8.0</div>
+          <div class="criterion-table-progress">
+            <div class="criterion-table-progress-bar good" style="width: 80%;"></div>
+          </div>
+          <div class="score-range">
+            <span>0 (Poor)</span>
+            <span>10 (Excellent)</span>
+          </div>
+        </div>
+
+        <div class="criterion-table-item animate-fadeIn" style="animation-delay: 0.3s;">
+          <div class="criterion-table-header">
+            <i class="fas fa-comments criterion-table-icon"></i>
+            <div>
+              <div class="criterion-table-title">Communication</div>
+              <div class="criterion-table-subtitle khmer">(ជំនាញទំនាក់ទំនង)</div>
+            </div>
+          </div>
+          <div class="criterion-table-score excellent" id="communicationScoreTable">9.2</div>
+          <div class="criterion-table-progress">
+            <div class="criterion-table-progress-bar excellent" style="width: 92%;"></div>
+          </div>
+          <div class="score-range">
+            <span>0 (Poor)</span>
+            <span>10 (Excellent)</span>
+          </div>
+        </div>
+
+        <div class="criterion-table-item animate-fadeIn" style="animation-delay: 0.4s;">
+          <div class="criterion-table-header">
+            <i class="fas fa-users criterion-table-icon"></i>
+            <div>
+              <div class="criterion-table-title">Participation</div>
+              <div class="criterion-table-subtitle khmer">(ការចូលរួម)</div>
+            </div>
+          </div>
+          <div class="criterion-table-score good" id="participationScoreTable">8.0</div>
+          <div class="criterion-table-progress">
+            <div class="criterion-table-progress-bar good" style="width: 80%;"></div>
+          </div>
+          <div class="score-range">
+            <span>0 (Poor)</span>
+            <span>10 (Excellent)</span>
+          </div>
+        </div>
+
+        <div class="criterion-table-item animate-fadeIn" style="animation-delay: 0.5s;">
+          <div class="criterion-table-header">
+            <i class="fas fa-chart-line criterion-table-icon"></i>
+            <div>
+              <div class="criterion-table-title">Rising & Falling</div>
+              <div class="criterion-table-subtitle khmer">(សំឡេងឡើងឬចុះ)</div>
+            </div>
+          </div>
+          <div class="criterion-table-score good" id="risingFallingScoreTable">7.5</div>
+          <div class="criterion-table-progress">
+            <div class="criterion-table-progress-bar good" style="width: 75%;"></div>
+          </div>
+          <div class="score-range">
+            <span>0 (Poor)</span>
+            <span>10 (Excellent)</span>
+          </div>
+        </div>
+
+        <div class="criterion-table-item animate-fadeIn" style="animation-delay: 0.6s;">
+          <div class="criterion-table-header">
+            <i class="fas fa-link criterion-table-icon"></i>
+            <div>
+              <div class="criterion-table-title">Linking Sounds</div>
+              <div class="criterion-table-subtitle khmer">(ការភ្ជាប់សំឡេង)</div>
+            </div>
+          </div>
+          <div class="criterion-table-score excellent" id="linkingSoundsScoreTable">8.5</div>
+          <div class="criterion-table-progress">
+            <div class="criterion-table-progress-bar excellent" style="width: 85%;"></div>
+          </div>
+          <div class="score-range">
+            <span>0 (Poor)</span>
+            <span>10 (Excellent)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overall Score with Progress Bar -->
+      <div class="overall-score animate-fadeIn" style="animation-delay: 0.7s;">
+        <div class="overall-score-content">
+          <h3>
+            <i class="fas fa-star"></i>
+            Overall Score
+          </h3>
+          <div class="overall-score-value" id="overallScoreValue">8.6</div>
+          
+          <!-- Progress Bar for Overall Score -->
+          <div class="overall-progress">
+            <div class="overall-progress-fill" id="overallProgressBar" style="width: 86%;"></div>
+          </div>
+          
+          <div class="performance-indicator">
+            <span>Poor</span>
+            <span>Average</span>
+            <span>Excellent</span>
+          </div>
+          
+          <!-- Animated Top Performer Badge -->
+          <div class="top-performer animate-bounce" id="topPerformer" style="display: none;">
+            <i class="fas fa-trophy"></i>
+            Top Performer
+          </div>
+        </div>
+      </div>
+
+      <!-- Feedback Cards -->
+      <div class="feedback-grid animate-fadeIn" style="animation-delay: 0.8s;">
+        <div class="feedback-card feedback-strength">
+          <div class="feedback-header">
+            <i class="fas fa-thumbs-up"></i>
+            Strengths
+          </div>
+          <p id="strengthText">Your pronunciation is excellent and you communicate complex ideas effectively.</p>
+        </div>
+
+        <div class="feedback-card feedback-weakness">
+          <div class="feedback-header">
+            <i class="fas fa-thumbs-down"></i>
+            Weaknesses
+          </div>
+          <p id="weaknessText">You need to participate more actively in class discussions and group activities.</p>
+        </div>
+
+        <div class="feedback-card feedback-improvement">
+          <div class="feedback-header">
+            <i class="fas fa-bullseye"></i>
+            Improvements
+          </div>
+          <p id="improvementText">Focus on initiating at least two contributions per class and work on your intonation patterns.</p>
+        </div>
+      </div>
+
+      <!-- Teacher Comments -->
+      <div class="comments-section animate-fadeIn" style="animation-delay: 0.9s;">
+        <div class="section-header">
+          <i class="fas fa-comment-dots"></i>
+          Teacher Comments
+        </div>
+        <div class="comments-container" id="commentsContainer">
+          <div class="empty-state">
+            <i class="fas fa-comments"></i>
+            <p>No teacher comments available yet.</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Comments will appear here once teachers provide feedback.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Performance History Chart -->
+      <div class="chart-section animate-fadeIn" style="animation-delay: 1.0s;">
+        <div class="section-header">
+          <i class="fas fa-chart-line"></i>
+          Performance History
+        </div>
+        <div class="chart-container">
+          <canvas id="performanceChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Send Points Modal -->
+  <div class="modal-overlay" id="sendPointsModal">
+    <div class="modal-content glass-dark animate-slideIn">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <i class="fas fa-paper-plane"></i>
+          Send Points
+        </h3>
+        <button class="modal-close" onclick="closeSendPointsModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="send-points-form" id="sendPointsForm">
+          <div class="send-points-input-group">
+            <label for="modalReceiverId">Receiver Student ID</label>
+            <input type="text" id="modalReceiverId" placeholder="Enter receiver's ID (e.g. stu002)" required>
+          </div>
+          
+          <div class="send-points-input-group">
+            <label for="modalSendAmount">Amount</label>
+            <input type="number" id="modalSendAmount" placeholder="Enter points amount" min="1" required>
+          </div>
+          
+          <button type="button" class="send-points-btn" id="modalSendPointsBtn" onclick="sendPoints()">
+            <i class="fas fa-paper-plane"></i>
+            Send Points
+          </button>
+          
+          <div class="send-points-message" id="modalSendPointsMessage"></div>
+        </form>
+        
+        <button class="history-toggle-btn" id="historyToggleBtn" onclick="toggleHistory()">
+          <i class="fas fa-chevron-down"></i>
+          View History
+        </button>
+        
+        <div class="send-points-history" id="sendPointsHistory">
+          <div class="send-points-history-header">
+            <i class="fas fa-history"></i>
+            Recent Transactions
+          </div>
+          
+          <div class="send-points-history-list" id="sendPointsHistoryList">
+            <div class="send-points-empty">
+              <i class="fas fa-spinner fa-spin"></i>
+              Loading transaction history...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Score Meaning Guide Pop-up -->
+  <div id="scoreGuideModal" class="score-guide-modal">
+    <div class="score-guide-glass animate-fadeIn">
+      <button class="close-btn" onclick="hideScoreGuide()">
+        <i class="fas fa-times"></i>
+      </button>
+      <h2 class="score-guide-title"><i class="fas fa-info-circle"></i> Score Meaning Guide</h2>
+      <div class="score-guide-list">
+        <div><b>0.0–1.9</b> <span>Very Poor – Needs serious improvement</span></div>
+        <div><b>2.0–3.9</b> <span>Poor – Not enough effort</span></div>
+        <div><b>4.0–4.9</b> <span>Below Average – Some effort</span></div>
+        <div><b>5.0–5.9</b> <span>Average – Just meets the minimum</span></div>
+        <div><b>7.0–7.9</b> <span>Good – Shows effort and understanding</span></div>
+        <div><b>8.0–8.9</b> <span>Very Good – Strong work</span></div>
+        <div><b>9.0–9.5</b> <span>Excellent – Great job, very few mistakes</span></div>
+        <div><b>9.6–10</b> <span>Outstanding – Perfect or near-perfect</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Restriction Modal -->
+  <div class="modal-overlay" id="restrictionModal" style="backdrop-filter: blur(7px); background: rgba(40,40,60,0.30);">
+    <div class="modal-content glass-dark animate-slideIn" style="max-width: 400px; text-align: center;">
+      <div class="modal-header" style="justify-content:center; border:none;">
+        <h3 class="modal-title" style="color:var(--danger);">
+          <i class="fas fa-ban"></i>
+          Restricted Access
+        </h3>
+      </div>
+      <div class="modal-body" style="font-size:1.08em;">
+        <div id="restrictionMsg" style="margin-bottom:24px;"></div>
+        <button class="btn btn-primary" onclick="logout()" style="background:var(--primary);color:white;">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Action Button -->
+  <div class="fab" id="fabButton" onclick="openSendPointsModal()">
+    <i class="fas fa-paper-plane"></i>
+  </div>
+
+  <script>
+    // Configuration - All backend URLs and functionality preserved
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw_hGdyYmWukTCzaZoxuKMv34mYpQMXd7JtSFzpMpRjGd947eM70u-a1xTUJYA894FwAQ/exec';
+    const POINTS_BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzRktKyql2I_FbPESNRpCrFDlse-qNd9_Opv9si-g-j2lcanOUPP49IzcyA59lFqVycdA/exec';
+    
+    let currentStudent = null;
+    let performanceChart = null;
+    let historyVisible = false;
+    let paymentAmount = 200; // Default payment amount
+
+    // Show error message
+    function showError(message) {
+      const errorDiv = document.getElementById('errorMessage');
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+      
+      setTimeout(() => {
+        errorDiv.style.display = 'none';
+      }, 5000);
+    }
+
+    // Show password hint
+    async function showPasswordHint() {
+      const studentId = document.getElementById('studentId').value.trim();
+      
+      if (!studentId) {
+        showError('Please enter your Student ID first');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${SCRIPT_URL}?action=getPasswordHint&studentId=${studentId}&t=${Date.now()}`);
+        const data = await response.json();
+        
+        if (data.error) {
+          showError(data.error);
+          return;
+        }
+        
+        const hintDiv = document.getElementById('hintMessage');
+        hintDiv.innerHTML = `<i class="fas fa-lightbulb"></i> ${data.hint}`;
+        hintDiv.style.display = 'block';
+        
+      } catch (error) {
+        showError('Unable to fetch password hint');
+      }
+    }
+
+    // Fetch student points for the currently logged in student
+    async function fetchStudentPoints() {
+      if (!currentStudent) {
+        document.getElementById('pointsValue').textContent = '--';
+        return;
+      }
+
+      const params = new URLSearchParams({
+        action: 'login',
+        id: currentStudent.StudentID,
+        password: currentStudent.Password
+      });
+      
+      try {
+        const response = await fetch(`${POINTS_BACKEND_URL}?${params}`);
+        const data = await response.json();
+
+        if (data.success) {
+          document.getElementById('pointsValue').textContent = data.points;
+        } else {
+          document.getElementById('pointsValue').textContent = '--';
+        }
+      } catch (error) {
+        document.getElementById('pointsValue').textContent = '--';
+      }
+    }
+
+    // Send points to another student
+    async function sendPoints() {
+      const receiverId = document.getElementById('modalReceiverId').value.trim();
+      const amount = parseInt(document.getElementById('modalSendAmount').value.trim());
+      const messageEl = document.getElementById('modalSendPointsMessage');
+      const btn = document.getElementById('modalSendPointsBtn');
+      
+      // Validation
+      if (!receiverId || isNaN(amount) || amount <= 0) {
+        messageEl.textContent = 'Please enter a valid receiver ID and positive amount';
+        messageEl.className = 'send-points-message send-points-error';
+        messageEl.style.display = 'block';
+        return;
+      }
+
+      if (receiverId === currentStudent.StudentID) {
+        messageEl.textContent = 'You cannot send points to yourself';
+        messageEl.className = 'send-points-message send-points-error';
+        messageEl.style.display = 'block';
+        return;
+      }
+
+      // Disable button during request
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+      const params = new URLSearchParams({
+        action: 'sendPoints',
+        id: currentStudent.StudentID,
+        password: currentStudent.Password,
+        receiverId: receiverId,
+        amount: amount
+      });
+
+      try {
+        const response = await fetch(`${POINTS_BACKEND_URL}?${params}`, { method: 'POST' });
+        const data = await response.json();
+
+        if (data.success) {
+          messageEl.textContent = `Successfully sent ${amount} points to ${receiverId}`;
+          messageEl.className = 'send-points-message send-points-success';
+          messageEl.style.display = 'block';
+          
+          // Clear form
+          document.getElementById('modalReceiverId').value = '';
+          document.getElementById('modalSendAmount').value = '';
+          
+          // Refresh points and history
+          await Promise.all([
+            fetchStudentPoints(),
+            loadPointsHistory()
+          ]);
+        } else {
+          messageEl.textContent = data.msg || 'Failed to send points';
+          messageEl.className = 'send-points-message send-points-error';
+          messageEl.style.display = 'block';
+        }
+      } catch (error) {
+        messageEl.textContent = 'Network error. Please try again.';
+        messageEl.className = 'send-points-message send-points-error';
+        messageEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Points';
+      }
+    }
+
+    // Load points transaction history
+    async function loadPointsHistory() {
+      if (!currentStudent) return;
+      
+      const historyList = document.getElementById('sendPointsHistoryList');
+      historyList.innerHTML = '<div class="send-points-empty"><i class="fas fa-spinner fa-spin"></i> Loading transaction history...</div>';
+
+      const params = new URLSearchParams({
+        action: 'getRecentTransfers',
+        id: currentStudent.StudentID
+      });
+
+      try {
+        const response = await fetch(`${POINTS_BACKEND_URL}?${params}`);
+        const data = await response.json();
+
+        if (data.success && data.history && data.history.length > 0) {
+          historyList.innerHTML = data.history.map(item => `
+            <div class="send-points-history-item ${item.direction}">
+              <div class="send-points-history-details">
+                <div class="send-points-history-direction ${item.direction}">
+                  ${item.direction === 'sent' ? 'Sent to' : 'Received from'} 
+                  <span class="send-points-history-id">${item.direction === 'sent' ? item.to : item.from}</span>
+                </div>
+                <div class="send-points-history-amount">${item.amount} points</div>
+              </div>
+              <div class="send-points-history-date">${new Date(item.date).toLocaleString()}</div>
+            </div>
+          `).join('');
+        } else {
+          historyList.innerHTML = '<div class="send-points-empty"><i class="fas fa-history"></i> No transactions found</div>';
+        }
+      } catch (error) {
+        historyList.innerHTML = '<div class="send-points-empty"><i class="fas fa-exclamation-triangle"></i> Failed to load history</div>';
+      }
+    }
+
+    // Apply coupon code
+    async function applyCoupon() {
+      const couponCode = document.getElementById('couponCode').value.trim();
+      const messageEl = document.getElementById('couponMessage');
+      
+      if (!couponCode) {
+        messageEl.textContent = 'Please enter a coupon code';
+        messageEl.className = 'coupon-message coupon-error';
+        messageEl.style.display = 'block';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${SCRIPT_URL}?action=validateCoupon&studentId=${currentStudent.StudentID}&couponCode=${couponCode}&t=${Date.now()}`);
+        const data = await response.json();
+        
+        if (data.success) {
+          // Update UI with coupon details
+          document.getElementById('discountPercent').textContent = `${data.discountPercent}%`;
+          document.getElementById('amountAfterDiscount').textContent = `$${data.newAmount}`;
+          
+          messageEl.textContent = data.message;
+          messageEl.className = 'coupon-message coupon-success';
+          messageEl.style.display = 'block';
+        } else {
+          // Reset discount if coupon is invalid
+          document.getElementById('discountPercent').textContent = '0%';
+          document.getElementById('amountAfterDiscount').textContent = `$${paymentAmount}`;
+          
+          messageEl.textContent = data.message || 'Invalid coupon code';
+          messageEl.className = 'coupon-message coupon-error';
+          messageEl.style.display = 'block';
+        }
+      } catch (error) {
+        messageEl.textContent = 'Error validating coupon. Please try again.';
+        messageEl.className = 'coupon-message coupon-error';
+        messageEl.style.display = 'block';
+      }
+    }
+
+    // Login function
+    async function login() {
+      const studentId = document.getElementById('studentId').value.trim().toLowerCase();
+      const password = document.getElementById('password').value.trim();
+      const loginBtn = document.getElementById('loginBtn');
+      const loginText = document.getElementById('loginText');
+      
+      // Validation
+      if (!studentId || !password) {
+        showError('Please enter both Student ID and Password');
+        return;
+      }
+
+      if (!/^stu\d{3}$/.test(studentId)) {
+        showError('Student ID must be in format stuXXX (e.g. stu001)');
+        return;
+      }
+
+      // Show loading
+      loginBtn.disabled = true;
+      loginText.innerHTML = '<div class="spinner"></div> Logging in...';
+
+      try {
+        // Fetch student data
+        const response = await fetch(`${SCRIPT_URL}?action=getStudentData&studentId=${studentId}&t=${Date.now()}`);
+        const data = await response.json();
+        
+        if (data.error) {
+          showError(data.error);
+          return;
+        }
+
+        // Verify password
+        if (data.Password !== password) {
+          showError('Incorrect password. Please try again.');
+          return;
+        }
+
+        // Success - load dashboard
+        currentStudent = data;
+        await loadDashboard();
+        
+        // Show login success alert
+        showLoginSuccess();
+        
+      } catch (error) {
+        showError('Login failed. Please try again later.');
+      } finally {
+        loginBtn.disabled = false;
+        loginText.innerHTML = 'Login to Dashboard';
+      }
+    }
+
+    // Show login success alert
+    function showLoginSuccess() {
+      const alert = document.getElementById('loginSuccessAlert');
+      alert.style.display = 'flex';
+      alert.classList.add('animate-loginSuccess');
+      
+      setTimeout(() => {
+        alert.style.display = 'none';
+      }, 3000);
+    }
+
+    // Load dashboard data
+    async function loadDashboard() {
+      if (!currentStudent) return;
+      
+      // Restriction logic
+      const restrictionValue = (currentStudent.restriction ?? currentStudent.Restriction ?? "").toString().trim();
+      console.log("Restriction value:", restrictionValue);
+
+      document.getElementById('loginContainer').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+
+      if (restrictionValue !== "") {
+        document.getElementById('dashboard').classList.add('blurred');
+        document.getElementById('restrictionModal').classList.add('active');
+        document.getElementById('restrictionMsg').innerHTML = 
+          (restrictionValue.toLowerCase() === "blocked" || restrictionValue.toLowerCase() === "restricted")
+            ? "Your account is currently restricted from accessing the dashboard. Please contact your teacher or admin for more information."
+            : restrictionValue;
+        document.getElementById('scoreGuideModal').style.display = 'none';
+      } else {
+        document.getElementById('dashboard').classList.remove('blurred');
+        document.getElementById('restrictionModal').classList.remove('active');
+      }
+      
+      // Set avatar using UI Avatars API
+      const avatar = document.getElementById('userAvatar');
+      avatar.style.backgroundImage = `url(https://ui-avatars.com/api/?name=${encodeURIComponent(currentStudent.Name)}&background=4f46e5&color=fff&size=128)`;
+      avatar.textContent = '';
+
+      // Populate student info
+      document.getElementById('studentName').textContent = currentStudent.Name;
+      document.getElementById('displayStudentId').textContent = currentStudent.StudentID;
+      
+      // Set payment status
+      updatePaymentStatus();
+      
+      // Set scores
+      updateScores();
+      
+      // Set feedback
+      document.getElementById('strengthText').textContent = currentStudent.Strength || 'Not specified';
+      document.getElementById('weaknessText').textContent = currentStudent.Weakness || 'Not specified';
+      document.getElementById('improvementText').textContent = currentStudent.Improvement || 'Not specified';
+
+      // Initialize coupon redemption section
+      paymentAmount = currentStudent.PaymentAmount || 200;
+      document.getElementById('paymentAmount').textContent = `$${paymentAmount}`;
+      document.getElementById('amountAfterDiscount').textContent = `$${paymentAmount}`;
+
+      // Load additional data
+      await Promise.all([
+        loadComments(),
+        loadPerformanceHistory(),
+        fetchStudentPoints(),
+        loadPointsHistory()
+      ]);
+
+      // Show score guide after successful login
+      showScoreGuide();
+    }
+
+    // Update payment status
+    function updatePaymentStatus() {
+      const badge = document.getElementById('paymentBadge');
+      const dates = document.getElementById('paymentDates');
+      const status = (currentStudent.TuitionStatus || 'unpaid').toLowerCase();
+      
+      badge.className = 'status-badge animate-pulse animate-glow';
+      
+      switch(status) {
+        case 'paid':
+          badge.classList.add('status-paid');
+          badge.innerHTML = '<i class="fas fa-check-circle"></i><span>PAID</span>';
+          break;
+        case 'pending':
+          badge.classList.add('status-pending');
+          badge.innerHTML = '<i class="fas fa-clock"></i><span>PENDING</span>';
+          break;
+        default:
+          badge.classList.add('status-unpaid');
+          badge.innerHTML = '<i class="fas fa-exclamation-circle"></i><span>UNPAID</span>';
+      }
+      
+      // Update payment dates
+      if (currentStudent.LastPaymentDate && currentStudent.NextDueDate) {
+        dates.innerHTML = `
+          <div>Last Paid: ${currentStudent.LastPaymentDate}</div>
+          <div>Next Due: ${currentStudent.NextDueDate}</div>
+        `;
+        
+        // Check if payment is due within 7 days
+        const nextDueDate = new Date(currentStudent.NextDueDate);
+        const today = new Date();
+        const timeDiff = nextDueDate.getTime() - today.getTime();
+        const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        
+        if (daysDiff <= 7 && daysDiff >= 0 && status !== 'paid') {
+          document.getElementById('paymentReminder').style.display = 'block';
+        }
+      } else {
+        dates.innerHTML = `
+          <div>Last Paid: May 15, 2025</div>
+          <div>Next Due: August 1, 2025</div>
+        `;
+      }
+    }
+
+    // Update scores with grid table
+    function updateScores() {
+      const scores = {
+        pronunciation: parseFloat(currentStudent.Pronunciation) || 0,
+        intonation: parseFloat(currentStudent.Intonation) || 0,
+        communication: parseFloat(currentStudent.Communication) || 0,
+        participation: parseFloat(currentStudent.Participation) || 0,
+        risingFalling: parseFloat(currentStudent["Rising & Falling"]) || 0,
+        linkingSounds: parseFloat(currentStudent["Linking Sounds"]) || 0
+      };
+
+      // Check if all scores are zero
+      const allZero = Object.values(scores).every(score => score === 0);
+
+      // Update individual scores in the grid table
+      Object.keys(scores).forEach(key => {
+        const score = scores[key];
+        const percentage = (score * 10);
+        
+        // Update score display
+        const scoreElement = document.getElementById(key + 'ScoreTable');
+        scoreElement.textContent = score.toFixed(1);
+        
+        // Update progress bar
+        const progressBar = document.querySelector(`#${key}ScoreTable`).closest('.criterion-table-item').querySelector('.criterion-table-progress-bar');
+        progressBar.style.width = `${percentage}%`;
+        
+        // Update score styling
+        scoreElement.className = 'criterion-table-score';
+        progressBar.className = 'criterion-table-progress-bar';
+        
+        if (score >= 8) {
+          scoreElement.classList.add('excellent');
+          progressBar.classList.add('excellent');
+        } else if (score >= 6) {
+          scoreElement.classList.add('good');
+          progressBar.classList.add('good');
+        } else {
+          scoreElement.classList.add('poor');
+          progressBar.classList.add('poor');
+        }
+      });
+
+      // Calculate and update overall score (now with 6 criteria)
+      const overall = Object.values(scores).reduce((a, b) => a + b, 0) / 6;
+      const overallScoreElement = document.getElementById('overallScoreValue');
+      overallScoreElement.textContent = overall.toFixed(1);
+      overallScoreElement.classList.add('animate-scoreUpdate');
+      
+      // Remove animation class after animation completes
+      setTimeout(() => {
+        overallScoreElement.classList.remove('animate-scoreUpdate');
+      }, 500);
+
+      // Update overall progress bar
+      document.getElementById('overallProgressBar').style.width = (overall * 10) + '%';
+
+      // Only show Top Performer if overall >= 8.5 AND not all scores are zero
+      if (overall >= 8.5 && !allZero) {
+        document.getElementById('topPerformer').style.display = 'inline-block';
+      } else {
+        document.getElementById('topPerformer').style.display = 'none';
+      }
+    }
+
+    // Load comments
+    async function loadComments() {
+      try {
+        const response = await fetch(`${SCRIPT_URL}?action=getStudentComments&studentId=${currentStudent.StudentID}&t=${Date.now()}`);
+        const comments = await response.json();
+        
+        const container = document.getElementById('commentsContainer');
+        
+        if (!comments || comments.length === 0 || comments.error) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-comments"></i>
+              <p>No teacher comments available yet.</p>
+              <p style="font-size: 0.9rem; margin-top: 10px;">Comments will appear here once teachers provide feedback.</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = comments.map(comment => `
+          <div class="comment-item">
+            <div class="comment-header">
+              <div class="comment-teacher">${comment.teacherName || 'Teacher'}</div>
+              <div class="comment-meta">
+                <span class="comment-type type-${comment.type || 'general'}">${comment.type || 'general'}</span>
+                <span>${comment.date || 'Recent'}</span>
+              </div>
+            </div>
+            <p>${comment.comment || comment.text || 'No comment text'}</p>
+          </div>
+        `).join('');
+        
+      } catch (error) {
+        console.error('Error loading comments:', error);
+        document.getElementById('commentsContainer').innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-comments"></i>
+            <p>Unable to load comments at this time.</p>
+          </div>
+        `;
+      }
+    }
+
+    // Load performance history
+    async function loadPerformanceHistory() {
+      try {
+        const response = await fetch(`${SCRIPT_URL}?action=getPerformanceHistory&studentId=${currentStudent.StudentID}&t=${Date.now()}`);
+        const history = await response.json();
+        
+        if (!history || history.length === 0 || history.error) {
+          // Create sample data for demonstration
+          const sampleData = [
+            { date: '2024-01', overallScore: 7.2, pronunciation: 7.0, intonation: 6.8, communication: 7.5, participation: 7.5, risingFalling: 7.0, linkingSounds: 7.0 },
+            { date: '2024-02', overallScore: 7.8, pronunciation: 7.5, intonation: 7.2, communication: 8.0, participation: 8.5, risingFalling: 7.5, linkingSounds: 7.5 },
+            { date: '2024-03', overallScore: 8.1, pronunciation: 8.0, intonation: 7.8, communication: 8.5, participation: 8.2, risingFalling: 8.0, linkingSounds: 8.0 },
+            { date: '2024-04', overallScore: 8.6, pronunciation: 9.0, intonation: 8.0, communication: 9.2, participation: 8.0, risingFalling: 8.5, linkingSounds: 8.5 }
+          ];
+          createChart(sampleData);
+          updateMonthlyPerformance(sampleData);
+          return;
+        }
+
+        createChart(history);
+        updateMonthlyPerformance(history);
+        
+      } catch (error) {
+        console.error('Error loading performance history:', error);
+        // Still create sample data on error
+        const sampleData = [
+          { date: '2024-01', overallScore: 7.2, pronunciation: 7.0, intonation: 6.8, communication: 7.5, participation: 7.5, risingFalling: 7.0, linkingSounds: 7.0 },
+          { date: '2024-02', overallScore: 7.8, pronunciation: 7.5, intonation: 7.2, communication: 8.0, participation: 8.5, risingFalling: 7.5, linkingSounds: 7.5 },
+          { date: '2024-03', overallScore: 8.1, pronunciation: 8.0, intonation: 7.8, communication: 8.5, participation: 8.2, risingFalling: 8.0, linkingSounds: 8.0 },
+          { date: '2024-04', overallScore: 8.6, pronunciation: 9.0, intonation: 8.0, communication: 9.2, participation: 8.0, risingFalling: 8.5, linkingSounds: 8.5 }
+        ];
+        createChart(sampleData);
+        updateMonthlyPerformance(sampleData);
+      }
+    }
+
+    // Update monthly performance bar
+    function updateMonthlyPerformance(history) {
+      if (!history || history.length === 0) return;
+      
+      // Get the latest month's data
+      const latestMonth = history[history.length - 1];
+      const monthName = latestMonth.date;
+      const overallScore = latestMonth.overallScore;
+      const percentage = Math.round(overallScore * 10);
+      
+      // Update the monthly performance bar
+      document.getElementById('currentMonth').textContent = monthName;
+      document.getElementById('monthlyPerformanceScore').textContent = `${percentage}%`;
+      document.getElementById('monthlyPerformanceBar').style.width = `${percentage}%`;
+      document.getElementById('monthlyPerformanceBar').textContent = `${percentage}%`;
+    }
+
+    // Create chart
+    function createChart(data) {
+      const ctx = document.getElementById('performanceChart').getContext('2d');
+      
+      if (performanceChart) {
+        performanceChart.destroy();
+      }
+      
+      performanceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: data.map(d => d.date),
+          datasets: [
+            {
+              label: 'Overall Score',
+              data: data.map(d => d.overallScore),
+              borderColor: '#4f46e5',
+              backgroundColor: 'rgba(79, 70, 229, 0.1)',
+              borderWidth: 3,
+              fill: true,
+              tension: 0.4
+            },
+            {
+              label: 'Pronunciation',
+              data: data.map(d => d.pronunciation),
+              borderColor: '#10b981',
+              borderWidth: 2,
+              fill: false
+            },
+            {
+              label: 'Intonation',
+              data: data.map(d => d.intonation),
+              borderColor: '#f59e0b',
+              borderWidth: 2,
+              fill: false
+            },
+            {
+              label: 'Communication',
+              data: data.map(d => d.communication),
+              borderColor: '#ef4444',
+              borderWidth: 2,
+              fill: false
+            },
+            {
+              label: 'Participation',
+              data: data.map(d => d.participation),
+              borderColor: '#8b5cf6',
+              borderWidth: 2,
+              fill: false
+            },
+            {
+              label: 'Rising & Falling',
+              data: data.map(d => d.risingFalling),
+              borderColor: '#ec4899',
+              borderWidth: 2,
+              fill: false
+            },
+            {
+              label: 'Linking Sounds',
+              data: data.map(d => d.linkingSounds),
+              borderColor: '#06b6d4',
+              borderWidth: 2,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 10,
+              grid: {
+                color: 'rgba(0, 0, 0, 0.1)'
+              }
+            },
+            x: {
+              grid: {
+                color: 'rgba(0, 0, 0, 0.1)'
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'top'
+            }
+          }
+        }
+      });
+    }
+
+    // Logout function
+    function logout() {
+      currentStudent = null;
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('loginContainer').style.display = 'flex';
+      document.getElementById('studentId').value = '';
+      document.getElementById('password').value = '';
+      document.getElementById('errorMessage').style.display = 'none';
+      document.getElementById('hintMessage').style.display = 'none';
+      document.getElementById('paymentReminder').style.display = 'none';
+      
+      if (performanceChart) {
+        performanceChart.destroy();
+        performanceChart = null;
+      }
+    }
+
+    // Enter key support
+    document.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && document.getElementById('loginContainer').style.display !== 'none') {
+        login();
+      }
+    });
+
+    // Show score guide after successful login
+    function showScoreGuide() {
+      document.getElementById('scoreGuideModal').style.display = 'flex';
+      // Auto-close after 20s for convenience
+      setTimeout(() => hideScoreGuide(), 20000);
+    }
+    
+    function hideScoreGuide() {
+      document.getElementById('scoreGuideModal').style.display = 'none';
+    }
+
+    // Send Points Modal Functions
+    function openSendPointsModal() {
+      const modal = document.getElementById('sendPointsModal');
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      loadPointsHistory();
+    }
+
+    function closeSendPointsModal() {
+      const modal = document.getElementById('sendPointsModal');
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      
+      // Reset form and messages
+      document.getElementById('modalReceiverId').value = '';
+      document.getElementById('modalSendAmount').value = '';
+      document.getElementById('modalSendPointsMessage').style.display = 'none';
+      
+      // Hide history if visible
+      if (historyVisible) {
+        toggleHistory();
+      }
+    }
+
+    function toggleHistory() {
+      const historySection = document.getElementById('sendPointsHistory');
+      const toggleBtn = document.getElementById('historyToggleBtn');
+      
+      historyVisible = !historyVisible;
+      
+      if (historyVisible) {
+        historySection.classList.add('active');
+        toggleBtn.classList.add('active');
+        toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i> Hide History';
+      } else {
+        historySection.classList.remove('active');
+        toggleBtn.classList.remove('active');
+        toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i> View History';
+      }
+    }
+
+    // Toggle theme
+    function toggleTheme() {
+      const body = document.body;
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      
+      if (body.getAttribute('data-theme') === 'dark') {
+        body.removeAttribute('data-theme');
+        themeIcon.className = 'fas fa-moon';
+      } else {
+        body.setAttribute('data-theme', 'dark');
+        themeIcon.className = 'fas fa-sun';
+      }
+    }
+
+    // Scroll handler for shrinking header
+    function handleScroll() {
+      const header = document.getElementById('dashboardHeader');
+      if (window.scrollY > 50) {
+        header.classList.add('shrink');
+      } else {
+        header.classList.remove('shrink');
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set up theme toggle
+      document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+      
+      // Set up scroll handler
+      window.addEventListener('scroll', handleScroll);
+      
+      // Set up coupon code input to respond to Enter key
+      document.getElementById('couponCode').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          applyCoupon();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
